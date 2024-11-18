@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+
+        .login-container {
+            background-color: white;
+            padding: 50px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h1 {
+            margin-bottom: 40px;
+            font-size: 2em;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            text-align: left;
+            color: #555;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+
+        button {
+            padding: 12px 25px;
+            background-color: #282c28;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #4799db;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <h1>Login</h1>
+
+        <form id="login-form" method="POST" action="{{ url_for('verificar') }}">
+            <label for="senha">Token:</label>
+            <input type="text" id="senha" name="senha" required>
+            <button type="submit">Entrar</button>
+        </form>
+
+        <div class="error-message" id="error-message" style="display: none;"></div>
+    </div>
+
+    <script>
+        document.getElementById("login-form").onsubmit = function(event) {
+            event.preventDefault(); 
+
+            let formData = new FormData(this);
+
+            fetch("{{ url_for('verificar') }}", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = "{{ url_for('loading') }}";
+                } else {
+                    return response.json().then(data => {
+                        const errorMessageElement = document.getElementById("error-message");
+                        errorMessageElement.textContent = data.error || "Erro desconhecido.";
+                        errorMessageElement.style.display = 'block';
+                    });
+                }
+            })
+            .catch(error => {
+                console.error("Erro ao verificar token:", error);
+                alert("Erro ao processar sua solicitação.");
+            });
+        };
+    </script>
+</body>
+</html>

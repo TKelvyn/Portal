@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loading page</title>
+<style>
+    body {
+        background-color: white; /* Definindo o fundo da página como branco */
+    }
+
+    body, html {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column; /* Adicionando esta linha para centralizar verticalmente */
+    }
+
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(3, 150px);
+        grid-template-rows: repeat(3, 150px);
+        gap: 10px;
+    }
+
+    .gif {
+        width: 100%;
+        height: 100%;
+    }
+
+    .title {
+        margin-top: 20px; 
+        text-align: center; 
+    }
+
+    .title p {
+        color: gray; 
+        font-size: 24px; 
+        font-weight: bold; 
+        margin-bottom: 10px; 
+        animation: blink 3s infinite; 
+    }
+
+    @keyframes blink {
+        0%, 50% {
+            opacity: 0;
+        }
+        75%, 100% {
+            opacity: 1;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div class="title">
+    <p>Carregando</p>
+    <img src="/gif/3">
+</div>
+
+<div class="grid-container" id="animation-container">
+    <div class="gif-container"></div>
+    <div class="gif-container"></div>
+    <div class="gif-container"></div>
+    <div class="gif-container"></div>
+    <div class="gif-container"></div>
+    <div class="gif-container"></div>
+    <div class="gif-container"></div>
+    <div class="gif-container"></div>
+    <div class="gif-container"></div>
+</div>
+
+<script>
+    const gifPath = "/gif/1";
+    const containers = document.querySelectorAll('.gif-container');
+
+    function loadGif(container) {
+        const gifElement = document.createElement('img');
+        gifElement.src = gifPath;
+        gifElement.classList.add('gif');
+        container.appendChild(gifElement);
+        
+        // Remover o GIF após um tempo definido
+        setTimeout(() => {
+            container.removeChild(gifElement);
+        }, 5500); // 5000 milliseconds = 5 segundos
+    }
+
+    function loadRandomGif() {
+        const randomIndex = Math.floor(Math.random() * containers.length);
+        const container = containers[randomIndex];
+        container.innerHTML = ''; 
+        loadGif(container);
+    }
+
+    const interval = setInterval(loadRandomGif, 6000); // 6000 milliseconds = 6 segundos
+
+    // setTimeout(() => clearInterval(interval), 30000); // 30000 milliseconds = 30 segundos
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        fetch('/process')
+            .then(response => response.text())
+            .then(data => {
+                window.location.href = "/empresas?empresa=Teste%20Empresa&datahora=" + encodeURIComponent(new Date().toLocaleString());
+            });
+    });
+    </script>
+</body>
+</html>

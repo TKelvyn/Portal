@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Georama:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <title>Monitoria de Equipamentos</title>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+    <h1>Promessa de Pagamento</h1>
+    <p id="nomeEmpresa" class="nome-empresa"></p>
+    <hr/>
+
+    <div class="table-header__container">
+        <div class="table-header__linha">
+            <table class="table-header__structure">
+                <tbody class="table-header__body">
+                    <tr class="table-header__tr">
+                        <td class="table-header-cell__container"><p>CNPJ</p></td>
+                        <td class="table-header-cell__container"><p>Data vencimento</p></td>
+                        <td class="table-header-cell__container"><p>Valor</p></td>
+                        <td class="table-header-cell__container"><p>Promessa de Pagamento</p></td>
+                        <td class="table-header-cell__container"><p>Gerar Boleto</p></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <hr/>
+    <p id="datahora" class="datahora"></p>
+    <footer class="footer__container">
+        <div class="footer-content">
+            <p class="tagusNome">TAGUS-TEC SERVIÇOS TECNOLÓGICOS LTDA.</p>
+            <p class="tagusTelefone">0800 828 8080</p>
+        </div>
+    </footer>
+
+    <style>
+    .datahora {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 30px;
+    background-color: rgb(50, 52, 56); 
+    color: white; 
+    padding: 10px; 
+    border-radius: 5px; 
+    margin: 0;
+    }
+        .screenshotButton {
+            background-color: #242c2c; 
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            position: fixed;
+            top: 10px;
+            right: 10px;
+        }
+
+    .screenshotButton:hover {
+            background-color: #a78585; 
+    }
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    }
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    }
+
+    body{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Barlow Condensed', sans-serif;
+    }
+
+    h1{
+        font-size: 70px;
+        font-weight: 800;
+        color: rgb(49, 49, 49);
+    }
+
+    hr{
+        width: 70%;
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+    .footer__container.footer-fixed {
+        position: static;
+        bottom: 0;
+        z-index: 1;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center
+    }   
+
+    .footer__container{
+        position: sticky;
+        bottom: 0;
+        z-index: 1;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        
+    }
+
+    .footer-content{
+        margin-top: 20px;
+        height: 50px;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        background-color: rgb(74, 74, 74);
+    }
+
+    .footer-content > p {
+        display: flex;
+    }
+
+    .footer-content > .tagusNome {
+        margin-left: 150px;
+        color:white;
+        font-family: 'Barlow Condensed', sans-serif;
+        font-weight: 500;
+        font-size: 20px;
+    }
+
+    .footer-content > .tagusTelefone {
+        margin-right: 150px;
+        font-family: 'Barlow Condensed', sans-serif;
+        color:white;
+        font-weight: 300;
+        font-size: 20px;
+    }
+    .table__container{
+        border-radius: 10px;
+        height: auto;
+        width: 900px;
+        display: flex;
+        margin: 1px;
+    }
+
+    .table__linha{
+        width: 100%;
+        height: 80px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .table__structure{
+        display: flex;
+        flex-direction: row;
+    }
+
+    .table__body{
+        display: flex;
+        flex-direction: row;
+    }
+
+    .table__tr{
+        display: flex;
+        flex-direction: row;
+    }
+
+    .cell__container{
+        display: flex;
+        flex-direction: row;
+        margin: auto;
+        color: white;
+        height: 80px;
+        width: 220px;
+        font-family: 'Barlow Condensed', sans-serif;
+        font-weight: 300;
+        vertical-align: middle;
+        border: 0px solid white;
+        border-radius: 5px;
+        text-align: center;
+        margin: 1px;
+    }
+
+    .cell__container > p{
+        display: inline-block;
+        margin: auto;
+        padding: 15px;
+        font-size: 23px;
+    }
+    .table-header__container{
+        top: 0;
+        z-index: 1; 
+        position: sticky;
+        border-radius: 10px;
+        height: auto;
+        width: 900px;
+        display: flex;
+        margin: 1px;
+    }
+
+    .table-header__linha{
+        width: 100%;
+        height: 80px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .table-header__structure{
+        display: flex;
+        flex-direction: row;
+    }
+
+    .table-header__body{
+        display: flex;
+        flex-direction: row;
+    }
+
+    .table-header__tr{
+        display: flex;
+        flex-direction: row;
+    }
+
+    .table-header-cell__container{
+        display: flex;
+        flex-direction: row;
+        margin: auto;
+        color: rgb(255, 255, 255);
+        height: 80px;
+        width: 220px;
+        font-family: 'Barlow Condensed', sans-serif;
+        font-weight: 500;
+        vertical-align: middle;
+        border: 2px solid rgb(0, 0, 0);
+        border-radius: 5px;
+        background-color: #000000;
+        text-align: center;
+        margin: 1px;
+    }
+
+    .table-header-cell__container > p{
+        display: inline-block;
+        margin: auto;
+        padding: 15px;
+        font-size: 23px;
+    }
+    .nome-empresa {
+    font-size: 30px; 
+    font-weight: 550;
+    color: rgb(49, 49, 49);
+    margin-top: 10px; 
+}
+.input-date {
+    display: flex;
+    align-items: center;  
+    justify-content: center;  
+    margin: 0 auto;  
+    color: white;
+    height: 80px; 
+    width: 100%; 
+    max-width: 220px;  
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 500;
+    font-size: 23px;
+    vertical-align: middle;
+    border: 1px solid rgb(79, 82, 87);
+    border-radius: 5px;
+    text-align: center;
+    background-color: rgb(50, 52, 56);
+    margin: 1px;
+}
+
+.input-date:focus {
+    outline: none;
+    border-color: #205bff;
+}
+
+.generate-button {
+    background-color: rgb(201, 201, 201); 
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    cursor: pointer;
+    font-size: 23px;
+    border-radius: 5px;
+    margin-top: 1px;
+    opacity: 0.5;
+    pointer-events: none;
+    text-align: center;
+    width: 100%; 
+    max-width: 220px;  
+    box-sizing: border-box;  
+}
+
+.generate-button.enabled {
+    opacity: 1;
+    pointer-events: all;
+    background-color: #1a1a1a;
+}
+
+.generate-button:hover {
+    background-color: #030303; 
+}
+
+.flatpickr-calendar {
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    color: white;
+}
+
+
+.flatpickr-clear {
+    color: white;
+    background-color: #4CAF50;
+}
+
+.flatpickr-day.selected {
+    background-color: #205bff;
+    color: white;
+}
+.input-date::placeholder {
+    color: rgb(250, 250, 250); 
+    font-style: italic; 
+}
+    </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var urlParams = new URLSearchParams(window.location.search);
+    var empresa = urlParams.get('empresa');
+    var datahora = urlParams.get('datahora');
+    document.getElementById('nomeEmpresa').innerText = empresa;
+    document.getElementById('datahora').innerText = datahora;
+    
+    fetch('/data?empresa=' + empresa)
+    .then(response => response.json())
+    .then(data => {
+        var empresaData = data[empresa];
+        var empresanome = empresa;
+        const container = document.querySelector('.table-header__container');
+
+        Object.keys(data).forEach((entry, index) => {
+            if (entry === empresanome) {
+                var empresa = data[entry];
+                var todosComunicacaoOK = true; 
+
+                var uniqueRows = new Set(); 
+
+                for (var i = 0; i < empresa.length; i++) {
+                    var boletos = empresa[i][entry];
+                    
+                    for (var j = 0; j < boletos.length; j++) {
+                        var boleto = boletos[j];
+                        var cnpj = boleto['CNPJ'];
+                        var datavencimento = boleto['Data vencimento'];
+                        var valor = boleto['Valor'];
+
+                        var rowKey = cnpj + datavencimento + valor ;
+                        
+                        if (!uniqueRows.has(rowKey)) {
+                            const tableContainer = document.createElement('div');
+                            tableContainer.classList.add('table__container');
+
+                            const tableLinha = document.createElement('div');
+                            tableLinha.classList.add('table__linha');
+
+                            const tableStructure = document.createElement('table');
+                            tableStructure.classList.add('table__structure');
+
+                            const tableBody = document.createElement('tbody');
+                            tableBody.classList.add('table__body');
+
+                            const tableTr = document.createElement('tr');
+                            tableTr.classList.add('table__tr');
+
+                            const cellContents = [cnpj, datavencimento , valor];
+                            
+                            cellContents.forEach(content => {
+                                const cellContainer = document.createElement('td');
+                                cellContainer.classList.add('cell__container');
+
+                                const pElement = document.createElement('p');
+                                pElement.innerText = [content];
+
+                                cellContainer.style.backgroundColor = index % 2 !== 0 ? 'rgb(79, 82, 87)' : 'rgb(50, 52, 56)';
+                                
+                                cellContainer.appendChild(pElement);
+                                tableTr.appendChild(cellContainer);
+                            });
+
+                            const dateCell = document.createElement('td');
+                            dateCell.classList.add('cell__container');
+                            const dateInput = document.createElement('input');
+                            dateInput.type = 'date';
+                            dateInput.classList.add('input-date');
+                            dateInput.placeholder = "DD/MM/AAAA"; 
+                            const currentDate = new Date();
+                            const minDate = currentDate.toISOString().split('T')[0];
+                            currentDate.setDate(currentDate.getDate() + 10); 
+                            const maxDate = currentDate.toISOString().split('T')[0]; 
+                            flatpickr(dateInput, {
+                                minDate: minDate, 
+                                maxDate: maxDate, 
+                                dateFormat: "d/m/Y", 
+                                disableMobile: true, 
+                                onChange: function(selectedDates, dateStr, instance) {
+                                    
+                                    const selectedDate = new Date(dateStr);
+                                    const today = new Date(minDate); 
+                                    const tenDaysLater = new Date(maxDate); 
+
+                                    if (selectedDate < today || selectedDate > tenDaysLater) {
+                                        alert("Por favor, selecione uma data entre hoje e os próximos 10 dias.");
+                                        generateButton.classList.remove('enabled'); 
+                                    } else {
+                                        generateButton.classList.add('enabled'); 
+                                    }
+                                },
+                                locale: {
+                                    firstDayOfWeek: 1, 
+                                },
+                                
+                                appendTo: dateCell, 
+                            });
+                            
+                            dateCell.appendChild(dateInput);
+                            tableTr.appendChild(dateCell);
+
+                            const buttonCell = document.createElement('td');
+                            buttonCell.classList.add('cell__container');
+                            const generateButton = document.createElement('button');
+                            generateButton.classList.add('generate-button');
+                            generateButton.innerText = 'Gerar Boleto';
+                            buttonCell.appendChild(generateButton);
+                            tableTr.appendChild(buttonCell);
+
+                            dateInput.addEventListener('change', function() {
+                                if (dateInput.value) {
+                                    generateButton.classList.add('enabled');
+                                } else {
+                                    generateButton.classList.remove('enabled');
+                                }
+                            });
+                        
+                            tableBody.appendChild(tableTr);
+                            tableStructure.appendChild(tableBody);
+                            tableLinha.appendChild(tableStructure);
+                            tableContainer.appendChild(tableLinha);
+                            container.insertAdjacentElement('afterend', tableContainer);
+
+                            uniqueRows.add(rowKey);
+                        }
+                    }
+                }
+            }
+        });
+
+    });
+});
+</script>
+</body>
+</html>
