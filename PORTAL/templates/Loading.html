@@ -102,9 +102,11 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         fetch('/process')
-            .then(response => response.text())
+            .then(response => response.json())
             .then(data => {
-                window.location.href = "/empresas?empresa=Teste%20Empresa&datahora=" + encodeURIComponent(new Date().toLocaleString());
+                const empresa = data.empresa; 
+                const datahora = data.datahora; 
+                window.location.href = `/empresas?empresa=${encodeURIComponent(empresa)}&datahora=${encodeURIComponent(datahora)}`;
             });
     });
     </script>
