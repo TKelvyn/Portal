@@ -23,8 +23,6 @@
                 <tbody class="table-header__body">
                     <tr class="table-header__tr">
                         <td class="table-header-cell__container"><p>CNPJ</p></td>
-                        <td class="table-header-cell__container"><p>Data vencimento</p></td>
-                        <td class="table-header-cell__container"><p>Valor</p></td>
                         <td class="table-header-cell__container"><p>Promessa de Pagamento</p></td>
                         <td class="table-header-cell__container"><p>Gerar Boleto</p></td>
                     </tr>
@@ -374,7 +372,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         var datavencimento = boleto['Data vencimento'];
                         var valor = boleto['Valor'];
 
-                        var rowKey = cnpj + datavencimento + valor ;
+                        var rowKey = cnpj ;
+
+                        //var rowKey = cnpj + datavencimento + valor; Para adicionar colunas seguir este modelo
                         
                         if (!uniqueRows.has(rowKey)) {
                             const tableContainer = document.createElement('div');
@@ -392,7 +392,9 @@ document.addEventListener('DOMContentLoaded', function() {
                             const tableTr = document.createElement('tr');
                             tableTr.classList.add('table__tr');
 
-                            const cellContents = [cnpj, datavencimento , valor];
+                            const cellContents = [cnpj];
+
+                            //const cellContents = [cnpj, datavencimento , valor]; Para adicionar colunas seguir este modelo
                             
                             cellContents.forEach(content => {
                                 const cellContainer = document.createElement('td');
@@ -460,7 +462,48 @@ document.addEventListener('DOMContentLoaded', function() {
                                     generateButton.classList.remove('enabled');
                                 }
                             });
-                        
+                            generateButton.addEventListener('click', function() {
+                                const dataPromessa = dateInput.value;
+                                if (!dataPromessa) {
+                                    alert("Por favor, selecione uma data.");
+                                    return;
+                                }
+
+                                generateButton.disabled = true;
+                                generateButton.innerText = 'Processando...';
+
+                                fetch('/gerar_boleto', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/x-www-form-urlencoded'  
+                                    },
+                                    body: new URLSearchParams({
+                                        'cnpj': cnpj,  
+                                        'data_promessa': dataPromessa  
+                                    })
+                                })
+                                .then(response => {
+                                    if (!response.ok) {
+                                        return response.json().then(data => {
+                                            throw new Error(data.erro || 'Erro desconhecido');
+                                        });
+                                    }
+                                    return response.blob();
+                                })
+                                .then(blob => {
+                                    const link = document.createElement('a');
+                                    link.href = URL.createObjectURL(blob);
+                                    link.download = `boleto_${cnpj}.pdf`;
+                                    link.click();
+                                })
+                                .catch(error => {
+                                    alert(error.message);
+                                })
+                                .finally(() => {
+                                    generateButton.disabled = false;
+                                    generateButton.innerText = 'Gerar Boleto';
+                                });
+                            });
                             tableBody.appendChild(tableTr);
                             tableStructure.appendChild(tableBody);
                             tableLinha.appendChild(tableStructure);
